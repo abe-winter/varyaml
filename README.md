@@ -15,7 +15,11 @@ When you load this file with varyaml, DBPORT and DBUSER will be read from your e
 
 Why is this important? Orchestration frameworks prefer to pass args in as env vars, but programs are easier to understand if they have config files. This tool lets you have both.
 
-### Defaults
+### Installation
+
+```pip install git+git://github.com/abe-winter/varyaml```
+
+### Default values
 
 If there's a top-level varyaml key, you can specify defaults (i.e. make the environment var optional).
 
