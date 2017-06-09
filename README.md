@@ -1,6 +1,6 @@
 ## varyaml
 
-This is a straight-up wrapper of pyyamml **but** it can also do this:
+Ever wanted to reference environment arguments inside your config file?
 
 ```
 db:
@@ -14,6 +14,15 @@ db:
 When you load this file with varyaml, DBPORT and DBUSER will be read from your environment and the loader will **crash** (yes) if they're missing.
 
 Why is this important? Orchestration frameworks prefer to pass args in as env vars, but programs are easier to understand if they have config files. This tool lets you have both.
+
+### Usage
+
+```
+import varyaml
+varyaml.load('{}')
+# or
+varyaml.load(open('config.yml'))
+```
 
 ### Installation
 
