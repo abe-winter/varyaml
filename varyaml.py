@@ -8,7 +8,6 @@ class Settings:
         self.path = settings.get('path')
 
     def substitute(self, var, path):
-        print('sub', var, path, self.path)
         if var in os.environ:
             return os.environ[var]
         elif self.path and os.path.exists(os.path.join(self.path, var)):

@@ -2,8 +2,8 @@ import setuptools
 
 setuptools.setup(
     name='varyaml',
-    version='0.0.2',
-    description='yaml parser with environment interpolation',
+    version='0.0.3',
+    description='yaml parser with environment interpolation -- safe secrets in configs',
     url='https://github.com/abe-winter/varyaml',
     author='Abe Winter',
     author_email='awinter.public@gmail.com',

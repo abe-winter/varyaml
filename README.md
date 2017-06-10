@@ -26,15 +26,32 @@ varyaml.load(open('config.yml'))
 
 ### Installation
 
-```pip install git+git://github.com/abe-winter/varyaml```
+```
+pip install varyaml
+# or
+pip install git+git://github.com/abe-winter/varyaml
+```
+
+### Reading vars from disk (secrets)
+
+Some orchestration frameworks put secrets on disk. You can get at them like this:
+
+```
+db:
+    password: $DB_PASS
+varyaml:
+    path: /run/secrets
+```
+
+In this example, varyaml will check first for an environment var named DB_PASS, then it will read the contents /run/secrets/DB_PASS if the file exists, then it will go to defaults (not provided in this sample), then crash if not found.
 
 ### Default values
 
-If there's a top-level varyaml key, you can specify defaults (i.e. make the environment var optional).
+You can specify defaults (i.e. make the environment var optional).
 
 (todo: what if the top-level object isn't a dictionary?)
 
-The special string value '__omit__' says to pop the key if there's no env arg. `path: /run/secrets` means if there's no env arg, look for a file called `/run/secrets/ARGNAME` as well.
+The special string value '__omit__' says to pop the key if not found.
 
 ```
 db:
