@@ -25,7 +25,7 @@ def test_dict_default():
     os.environ['X2'] = '60'
     ret = load({
         'omittable':'$X0', 'omitted':'$X1', 'present':'$X2', 'default':'$X3',
-        'varyaml':{'X0':'__omit__', 'X1':'__omit__', 'X2':1, 'X3':1},
+        'varyaml':{'defaults':{'X0':'__omit__', 'X1':'__omit__', 'X2':1, 'X3':1}},
     })
     assert ret['omittable'] == '50'
     assert 'omitted' not in ret
