@@ -32,6 +32,11 @@ def test_dict_default():
     assert ret['present'] == '60'
     assert ret['default'] == 1
 
+def test_file_lookup():
+    assert 'SECRET' not in os.environ
+    ret = load({'fromfile':'$SECRET', 'varyaml':{'path':'.'}})
+    assert ret['fromfile'] == 'secret-content\n'
+
 def test_missing_error():
     "also test path here"
     assert 'MISSING' not in os.environ

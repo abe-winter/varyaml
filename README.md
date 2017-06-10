@@ -34,7 +34,7 @@ If there's a top-level varyaml key, you can specify defaults (i.e. make the envi
 
 (todo: what if the top-level object isn't a dictionary?)
 
-The special string value '__omit__' says to pop the key if there's no env arg.
+The special string value '__omit__' says to pop the key if there's no env arg. `path: /run/secrets` means if there's no env arg, look for a file called `/run/secrets/ARGNAME` as well.
 
 ```
 db:
@@ -45,6 +45,7 @@ varyaml:
     defaults:
         DBPORT: 5432
         DBNAME: __omit__
+    path: /run/secrets
 ```
 
 ### Python versions & release status
