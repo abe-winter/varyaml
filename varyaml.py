@@ -67,6 +67,6 @@ def process(item, settings, path=''):
     return item
 
 def load(*args, **kwargs):
-    data = yaml.load(*args, **kwargs)
+    data = yaml.safe_load(*args, **kwargs)
     settings = Settings(data.get('varyaml', {}) if isinstance(data, dict) else {})
     return process(data, settings)
