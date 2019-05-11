@@ -51,7 +51,7 @@ You can specify defaults (i.e. make the environment var optional).
 
 (todo: what if the top-level object isn't a dictionary?)
 
-The special string value '__omit__' says to pop the key if not found.
+The special string value `__omit__` says to pop the key if not found.
 
 ```
 db:
@@ -65,6 +65,33 @@ varyaml:
     path: /run/secrets
 ```
 
+### Environment overrides & merging
+
+The parser takes an `overrides` section which can be used to set different defaults for different environments where your code runs. The order of precedence is:
+
+* env vars take highest priority
+* then on-disk in varyaml.path
+* then check for overrides in the current env
+* then look in the defaults section
+
+```
+db:
+    host: $DBHOST
+varyaml:
+    overrides:
+    - __filter__: {env: prod}
+      DBHOST: managed-db.cloudhost.com
+    # note: these are 'or' conditions. (env=staging or env=test)
+    - __filter__: {env: staging, env: test}
+      DBHOST: db.local
+```
+
+Design guidance:
+
+* Put per-environment overrides in your checked-in config file
+* Except anything that needs to be changed a lot, which you should make an env var or fetch from a live config system
+* And except secrets, which you should pass as environment vars or on disk
+
 ### Python versions & release status
 
 This is in beta release as of June 2017. The test suite is limited and not informed by any real-world snafus.
@@ -75,8 +102,7 @@ Tested on py3.5. Probably works on anything recent that supports pyyaml.
 
 ### Contributions
 
-High-quality technical blogposts on using this in the wild (a) will be appreciated and (b) may be linked to from this spot if they're really good.
-
-I'm not sure if I need env var redirection (i.e. `DEFAULT_HOST=localhost DBHOST='$DEFAULT_HOST'`). If you have a use case and you want to add the feature (disabled by default), send a pull request with tests.
-
-Is there a need for integer casting (i.e. for ports)? I assume not but if you need it, send a pull request.
+* Blog posts on using this in the wild (a) will be appreciated and (b) may be linked to from this spot if they're good.
+* I'm not sure if I need env var redirection (i.e. `DEFAULT_HOST=localhost DBHOST='$DEFAULT_HOST'`). If you have a use case and you want to add the feature (disabled by default), send a pull request with tests.
+* Escaping for dollar signs in config values (currently they're always converted to environment vars)
+* Is there a need for integer casting (i.e. for ports)? I assume not but if you need it, send a pull request.
