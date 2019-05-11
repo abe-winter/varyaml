@@ -2,20 +2,20 @@ import yaml, os
 
 class Omit: pass
 
-def get_overrides(settings, tags):
+def get_overrides(settings):
     "takes the varyaml section of a conf and the passed-in tags; returns matched override section or {}"
     overrides = settings.get('overrides', [])
     for section in overrides:
         assert '__filter__' in section
-        if any(tags.get(key) == val for key, val in section['__filter__'].items()):
+        if any(os.environ.get(key) == val for key, val in section['__filter__'].items()):
             return section
     return {}
 
 class Settings:
     "some kind of helper to manage interpolation & precedence"
-    def __init__(self, settings, tags):
+    def __init__(self, settings):
         self.defaults = settings.get('defaults', {})
-        self.overrides = get_overrides(settings, tags)
+        self.overrides = get_overrides(settings)
         self.path = settings.get('path')
 
     def substitute(self, var, path):
@@ -67,7 +67,6 @@ def process(item, settings, path=''):
     return item
 
 def load(*args, **kwargs):
-    tags = kwargs.pop('tags', {})
     data = yaml.load(*args, **kwargs)
-    settings = Settings(data.get('varyaml', {}) if isinstance(data, dict) else {}, tags)
+    settings = Settings(data.get('varyaml', {}) if isinstance(data, dict) else {})
     return process(data, settings)

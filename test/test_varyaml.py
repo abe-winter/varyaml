@@ -57,16 +57,19 @@ def test_overrides():
             'defaults': {'HOST': '127.0.0.1'},
             'overrides': [
                 {
-                    '__filter__': {'env': 'prod'},
+                    '__filter__': {'ENV': 'prod'},
                     'HOST': 'managed-db.cloudhost.com',
                 }, {
-                    '__filter__': {'env': 'test', 'env': 'staging'},
+                    '__filter__': {'ENV': 'test', 'ENV': 'staging'},
                     'HOST': 'db.local',
                 },
             ],
         },
     }
     assert load(conf)['host'] == '127.0.0.1'
-    assert load(conf, tags={'env': 'prod'})['host'] == 'managed-db.cloudhost.com'
-    assert load(conf, tags={'env': 'staging'})['host'] == 'db.local'
-    assert load(conf, tags={'env': 'nosuchenv'})['host'] == '127.0.0.1'
+    os.environ['ENV'] = 'prod'
+    assert load(conf)['host'] == 'managed-db.cloudhost.com'
+    os.environ['ENV'] = 'staging'
+    assert load(conf)['host'] == 'db.local'
+    os.environ['ENV'] = 'nosuchenv'
+    assert load(conf)['host'] == '127.0.0.1'

@@ -74,21 +74,23 @@ The parser takes an `overrides` section which can be used to set different defau
 * then check for overrides in the current env
 * then look in the defaults section
 
-Example:
+Overrides are controlled with environment vars. Example (controlled with `APP_ENV`):
 
 ```yaml
 db:
     host: $DBHOST
 varyaml:
     overrides:
-    - __filter__: {env: prod}
+    - __filter__: {APP_ENV: prod}
       DBHOST: managed-db.cloudhost.com
     # note: these are 'or' conditions. (env=staging or env=test)
-    - __filter__: {env: staging, env: test}
+    - __filter__: {APP_ENV: staging, APP_ENV: test}
       DBHOST: db.local
 ```
 
-Design guidance:
+There's a working example in [`test_overrides` in the test suite](/abe-winter/varyaml/search?q=test_overrides).
+
+Design guidance for overrides:
 
 * Put per-environment overrides in your checked-in config file
 * Except anything that needs to be changed a lot, which you should make an env var or fetch from a live config system
