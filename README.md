@@ -88,7 +88,7 @@ varyaml:
       DBHOST: db.local
 ```
 
-There's a working example in [`test_overrides` in the test suite](/abe-winter/varyaml/search?q=test_overrides).
+There's a working example in [`test_overrides` in the test suite](https://github.com/abe-winter/varyaml/search?q=test_overrides).
 
 Design guidance for overrides:
 
