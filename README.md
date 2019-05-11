@@ -2,7 +2,7 @@
 
 Ever wanted to reference environment arguments inside your config file?
 
-```
+```yaml
 db:
     host: database.internal.dns
     port: $DBPORT
@@ -17,7 +17,7 @@ Why is this important? Orchestration frameworks prefer to pass args in as env va
 
 ### Usage
 
-```
+```python
 import varyaml
 varyaml.load('{}')
 # or
@@ -26,7 +26,7 @@ varyaml.load(open('config.yml'))
 
 ### Installation
 
-```
+```bash
 pip install varyaml
 # or
 pip install git+git://github.com/abe-winter/varyaml
@@ -36,7 +36,7 @@ pip install git+git://github.com/abe-winter/varyaml
 
 Some orchestration frameworks put secrets on disk. You can get at them like this:
 
-```
+```yaml
 db:
     password: $DB_PASS
 varyaml:
@@ -53,7 +53,7 @@ You can specify defaults (i.e. make the environment var optional).
 
 The special string value `__omit__` says to pop the key if not found.
 
-```
+```yaml
 db:
     port: $DBPORT
     username: $DBUSER
@@ -76,7 +76,7 @@ The parser takes an `overrides` section which can be used to set different defau
 
 Example:
 
-```
+```yaml
 db:
     host: $DBHOST
 varyaml:
