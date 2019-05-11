@@ -70,6 +70,7 @@ varyaml:
 The parser takes an `overrides` section which can be used to set different defaults for different environments where your code runs. The order of precedence is:
 
 * env vars take highest priority
+* then on-disk in varyaml.path
 * then check for overrides in the current env
 * then look in the defaults section
 

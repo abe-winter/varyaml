@@ -2,9 +2,9 @@ import varyaml, pytest, itertools, os, yaml
 
 os.environ['VY_KEY'] = 'hello'
 
-def load(raw):
+def load(raw, **kwargs):
     "helper to dump & parse"
-    return varyaml.load(yaml.dump(raw))
+    return varyaml.load(yaml.dump(raw), **kwargs)
 
 def test_dict():
     ret = load({'a':'$VY_KEY', 'b':1, 'c':'ok'})
@@ -49,3 +49,24 @@ def test_nest_cases():
     assert load({'a':['$VY_KEY']})['a'][0] == 'hello'
     assert load([['$VY_KEY']])[0][0] == 'hello'
     assert load([{'b':'$VY_KEY'}])[0]['b'] == 'hello'
+
+def test_overrides():
+    conf = {
+        'host': '$HOST',
+        'varyaml': {
+            'defaults': {'HOST': '127.0.0.1'},
+            'overrides': [
+                {
+                    '__filter__': {'env': 'prod'},
+                    'HOST': 'managed-db.cloudhost.com',
+                }, {
+                    '__filter__': {'env': 'test', 'env': 'staging'},
+                    'HOST': 'db.local',
+                },
+            ],
+        },
+    }
+    assert load(conf)['host'] == '127.0.0.1'
+    assert load(conf, tags={'env': 'prod'})['host'] == 'managed-db.cloudhost.com'
+    assert load(conf, tags={'env': 'staging'})['host'] == 'db.local'
+    assert load(conf, tags={'env': 'nosuchenv'})['host'] == '127.0.0.1'
