@@ -74,6 +74,8 @@ The parser takes an `overrides` section which can be used to set different defau
 * then check for overrides in the current env
 * then look in the defaults section
 
+Example:
+
 ```
 db:
     host: $DBHOST

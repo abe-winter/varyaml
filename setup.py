@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name='varyaml',
-    version='0.0.3',
+    version='0.0.4',
     description='yaml parser with environment interpolation -- safe secrets in configs',
     url='https://github.com/abe-winter/varyaml',
     author='Abe Winter',
