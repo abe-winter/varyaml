@@ -32,7 +32,7 @@ pip install varyaml
 pip install git+git://github.com/abe-winter/varyaml
 ```
 
-### Reading vars from disk (secrets)
+### Reading vars from disk
 
 Some orchestration frameworks put secrets on disk. You can get at them like this:
 
@@ -64,6 +64,22 @@ varyaml:
         DBNAME: __omit__
     path: /run/secrets
 ```
+
+### Parsing environment vars as yaml
+
+When `parse_env` is true in the `varyaml` section, the engine will parse all environment vars as yaml. This is useful for bools, integers, and deep values (i.e. dictionaries) that you want to override.
+
+Example:
+
+```yaml
+yes: $YES
+varyaml:
+    defaults:
+        YES: true
+    parse_env: true
+```
+
+With `parse_env`, setting `YES=false` in the shell will result in a python bool False. Without `parse_env`, you'd get the string `'false'`.
 
 ### Environment overrides & merging
 
@@ -109,4 +125,3 @@ Tested on py3.5. Probably works on anything recent that supports pyyaml.
 * Blog posts on using this in the wild (a) will be appreciated and (b) may be linked to from this spot if they're good.
 * I'm not sure if I need env var redirection (i.e. `DEFAULT_HOST=localhost DBHOST='$DEFAULT_HOST'`). If you have a use case and you want to add the feature (disabled by default), send a pull request with tests.
 * Escaping for dollar signs in config values (currently they're always converted to environment vars)
-* Is there a need for integer casting (i.e. for ports)? I assume not but if you need it, send a pull request.

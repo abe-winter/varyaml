@@ -17,10 +17,11 @@ class Settings:
         self.defaults = settings.get('defaults', {})
         self.overrides = get_overrides(settings)
         self.path = settings.get('path')
+        self.parse_env = settings.get('parse_env')
 
     def substitute(self, var, path):
         if var in os.environ:
-            return os.environ[var]
+            return yaml.safe_load(os.environ[var]) if self.parse_env else os.environ[var]
         elif self.path and os.path.exists(os.path.join(self.path, var)):
             return open(os.path.join(self.path, var)).read()
         elif var in self.overrides:

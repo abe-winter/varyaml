@@ -73,3 +73,21 @@ def test_overrides():
     assert load(conf)['host'] == 'db.local'
     os.environ['ENV'] = 'nosuchenv'
     assert load(conf)['host'] == '127.0.0.1'
+
+def test_env_parsing():
+    "make sure env values are parsed as yaml when parse_env = True"
+    conf = {
+        'yes': '$YES',
+        'one': '$ONE',
+        'deep': '$DEEP',
+        'varyaml': {
+            'defaults': {'YES': True, 'ONE': 1, 'DEEP': {'hey': 'ok'}},
+            'parse_env': True,
+        },
+    }
+    assert load(conf) == {'yes': True, 'one': 1, 'deep': {'hey': 'ok'}, 'varyaml': conf['varyaml']}
+    # todo: here and elsewhere, reset os.environ overrides after tests
+    os.environ['YES'] = 'false'
+    os.environ['ONE'] = '2'
+    os.environ['DEEP'] = yaml.dump({'hey': 'whatup'})
+    assert load(conf) == {'yes': False, 'one': 2, 'deep': {'hey': 'whatup'}, 'varyaml': conf['varyaml']}
