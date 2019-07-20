@@ -13,15 +13,17 @@ db:
 
 When you load this file with varyaml, DBPORT and DBUSER will be read from your environment and the loader will **crash** (yes) if they're missing.
 
-Why is this important? Orchestration frameworks prefer to pass args in as env vars, but programs are easier to understand if they have config files. This tool lets you have both.
+Why is this important? Orchestration frameworks prefer to pass args in as env vars, but programs are easier to understand (and type-check) if they have config files. This tool lets you have both.
 
 ### Usage
 
 ```python
 import varyaml
-varyaml.load('{}')
+CONF = varyaml.load('{}')
 # or
-varyaml.load(open('config.yml'))
+CONF = varyaml.load(open('config.yml'))
+
+print(CONF['db']['host'])
 ```
 
 ### Installation
